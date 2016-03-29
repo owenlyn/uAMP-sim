@@ -38,8 +38,96 @@ class PhoneState(Enum):
     RINGING = 2
 
 
+@unique
+class HeadsetState(Enum):
+    UNKNOWN = -1
+    UNPLUGGED = 0
+    PLUGGED = 1
+
+    def is_plugged(self):
+        return self == HeadsetState.PLUGGED
+
+    def is_unplugged(self):
+        return self == HeadsetState.UNPLUGGED
+
+
+@unique
+class DockState(Enum):
+    UNKNOWN = -1
+    UNDOCKED = 0
+    CAR = 1
+    DESK = 2
+    HE_DESK = 3
+    LE_DESK = 4
+
+    def is_undocked(self):
+        return self == DockState.UNDOCKED
+
+
+@unique
+class NetworkType(Enum):
+    UNKNOWN = -1
+    MOBILE = 0
+    ETHERNET = 1
+    WIFI = 2
+    BLUETOOTH = 3
+    WIMAX = 4
+
+
+@unique
+class NetworkConnectionState(Enum):
+    UNKNOWN = -1
+    DISCONNECTED = 0
+    CONNECTING = 1
+    CONNECTED = 2
+
+
+class NetworkState:
+    def __init__(self):
+        self.type = NetworkType.UNKNOWN
+        self.connection_state = NetworkConnectionState.UNKNOWN
+
+
+@unique
+class BatteryStatus(Enum):
+    UNKNOWN = -1
+    DISCHARGING = 0
+    NOT_CHARGING = 1
+    CHARGING = 2
+    FULL = 3
+
+
+@unique
+class BatteryPlugStatusType(Enum):
+    NONE = 0
+    AC = 1
+    USB = 2
+    WIRELESS = 3
+
+
+@unique
+class BatteryEnergyState(Enum):
+    UNKNOWN = -1
+    LOW = 0
+    OKAY = 1
+
+
+class BatteryState:
+    def __init__(self):
+        self.level = None
+        self.temp = None
+        self.status = BatteryStatus.UNKNOWN
+        self.plug_status = BatteryPlugStatusType.NONE
+        self.energy_state = BatteryEnergyState.UNKNOWN
+
+
 class DeviceState:
     def __init__(self):
+        self.current_time = None
         self.screen_state = ScreenState.UNKNOWN
         self.screen_orientation = ScreenOrientation.UNKNOWN
         self.phone_state = PhoneState.UNKNOWN
+        self.headset_state = HeadsetState.UNKNOWN
+        self.dock_state = DockState.UNKNOWN
+        self.network_state = NetworkState()
+        self.battery_state = BatteryState()

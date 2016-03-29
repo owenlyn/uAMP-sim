@@ -4,23 +4,33 @@ import abc
 
 @unique
 class EventType(Enum):
-    UNKNOWN = 0
+    UNKNOWN = 'unknown'
     # Trace File Events
-    APP_START = 1
-    SCREEN = 2
-    SCREEN_ORIENTATION = 3
-    PHONE = 4
-    PACKAGE = 5
-    NOTIFICATION = 6
-    NETWORK = 7
-    STORAGE = 8
-    HEADSET = 9
-    DOCK = 10
-    BLUETOOTH = 11
-    BATTERY = 12
+    APP_START = 'app_start'
+    SCREEN = 'screen'
+    SCREEN_ORIENTATION = 'screen_orientation'
+    PHONE = 'phone'
+    PACKAGE = 'package'
+    NOTIFICATION = 'notification'
+
+    # Network Events
+    NETWORK = 'network'
+
+    # Battery Events
+    BATTERY = 'battery'
+    BATTERY_LEVEL = 'battery.level'
+    BATTERY_TEMPERATURE = 'battery.temperature'
+    BATTERY_STATUS = 'battery.status'
+    BATTERY_PLUG_STATUS = 'battery.plug_status'
+    BATTERY_ENERGY_STATE = 'battery.energy_state'
+
+    STORAGE = 'storage'
+    HEADSET = 'headset'
+    DOCK = 'dock'
+    BLUETOOTH = 'bluetooth'
 
     # Simulator Events
-    PRELOAD_APP = 1000
+    PRELOAD_APP = 'preload_app'
 
 
 class Event(metaclass=abc.ABCMeta):
@@ -53,3 +63,54 @@ class ScreenOrientationEvent(Event):
     def __init__(self, timestamp, state):
         Event.__init__(self, event_type=EventType.SCREEN_ORIENTATION, timestamp=timestamp)
         self.state = state
+
+
+class PhoneEvent(Event):
+    def __init__(self, timestamp, state):
+        Event.__init__(self, event_type=EventType.PHONE, timestamp=timestamp)
+        self.state = state
+
+
+class PackageEvent(Event):
+    def __init__(self, timestamp, package_event, package=None):
+        Event.__init__(self, event_type=EventType.PACKAGE, timestamp=timestamp)
+        self.event = package_event
+        self.package = package
+
+
+class NotificationEvent(Event):
+    def __init__(self, timestamp):
+        Event.__init__(self, event_type=EventType.NOTIFICATION, timestamp=timestamp)
+
+
+class NetworkEvent(Event):
+    def __init__(self, timestamp):
+        Event.__init__(self, event_type=EventType.NETWORK, timestamp=timestamp)
+
+
+class BatteryEvent(Event):
+    def __init__(self, timestamp):
+        Event.__init__(self, event_type=EventType.BATTERY, timestamp=timestamp)
+
+
+class StorageEvent(Event):
+    def __init__(self, timestamp):
+        Event.__init__(self, event_type=EventType.STORAGE, timestamp=timestamp)
+
+
+class HeadsetEvent(Event):
+    def __init__(self, timestamp, state):
+        Event.__init__(self, event_type=EventType.HEADSET, timestamp=timestamp)
+        self.state = state
+
+
+class DockEvent(Event):
+    def __init__(self, timestamp, state):
+        Event.__init__(self, event_type=EventType.DOCK, timestamp=timestamp)
+        self.state = state
+
+
+class BluetoothEvent(Event):
+    def __init__(self, timestamp, bluetooth_event):
+        Event.__init__(self, event_type=EventType.BLUETOOTH, timestamp=timestamp)
+        self.event = bluetooth_event
