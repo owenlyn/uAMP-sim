@@ -26,7 +26,7 @@ class SimulatorBase(metaclass=abc.ABCMeta):
         pass
 
     @abstractmethod
-    def register(self, module_type, sim_module, override=False):
+    def register(self, sim_module, override=False):
         pass
 
     @abstractmethod
@@ -34,9 +34,25 @@ class SimulatorBase(metaclass=abc.ABCMeta):
         pass
 
     @abstractmethod
+    def has_module_instance(self, name):
+        pass
+
+    @abstractmethod
     def get_module_instance(self, name):
         pass
 
     @abstractmethod
-    def run(self):
+    def run(self, trace_file):
+        pass
+
+    @abstractmethod
+    def subscribe(self, event_type, handler, event_filter=None):
+        pass
+
+    @abstractmethod
+    def broadcast(self, event):
+        pass
+
+    @abstractmethod
+    def register_alarm(self, alarm, handler):
         pass
