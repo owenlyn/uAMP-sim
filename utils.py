@@ -15,3 +15,9 @@ class PriorityQueue:
 
     def peek(self):
         return self._queue[0][1]
+
+    def size(self):
+        return len(self._queue)
+
+    def empty(self):
+        return len(self._queue) == 0

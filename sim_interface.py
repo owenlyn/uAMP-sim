@@ -3,7 +3,6 @@ from abc import abstractmethod
 
 
 class SimModule(metaclass=abc.ABCMeta):
-    @abstractmethod
     def __init__(self, name, module_type, simulator):
         self.name = name
         self.module_type = module_type
@@ -17,6 +16,39 @@ class SimModule(metaclass=abc.ABCMeta):
 
     @abstractmethod
     def build(self):
+        pass
+
+    @abstractmethod
+    def finish(self):
+        pass
+
+
+class TraceReader(metaclass=abc.ABCMeta):
+    def __init__(self, filename):
+        self.trace_filename = filename
+
+    @abstractmethod
+    def build(self):
+        pass
+
+    @abstractmethod
+    def finish(self):
+        pass
+
+    @abstractmethod
+    def peek_event(self):
+        pass
+
+    @abstractmethod
+    def get_event(self):
+        pass
+
+    @abstractmethod
+    def get_events(self, count):
+        pass
+
+    @abstractmethod
+    def end_of_trace(self):
         pass
 
 
@@ -46,7 +78,7 @@ class SimulatorBase(metaclass=abc.ABCMeta):
         pass
 
     @abstractmethod
-    def subscribe(self, event_type, handler, event_filter=None):
+    def subscribe(self, event_type, callback, event_filter=None):
         pass
 
     @abstractmethod
@@ -54,5 +86,5 @@ class SimulatorBase(metaclass=abc.ABCMeta):
         pass
 
     @abstractmethod
-    def register_alarm(self, alarm, handler):
+    def register_alarm(self, alarm, callback):
         pass

@@ -1,16 +1,18 @@
 from enum import Enum, unique
-import abc
 
 
 @unique
 class EventType(Enum):
     UNKNOWN = 'unknown'
+    PSEUDO = 'pseudo'
     # Trace File Events
-    APP_START = 'app_start'
+    APP_LAUNCH = 'app_start'
     SCREEN = 'screen'
     SCREEN_ORIENTATION = 'screen_orientation'
     PHONE = 'phone'
     PACKAGE = 'package'
+
+    # Notification events
     NOTIFICATION = 'notification'
 
     # Network Events
@@ -29,14 +31,20 @@ class EventType(Enum):
     DOCK = 'dock'
     BLUETOOTH = 'bluetooth'
 
-    # Simulator Events
+    SYSTEM_MEMORY_SNAPSHOT = 'system.memory_snapshot'
+
     PRELOAD_APP = 'preload_app'
 
+    # Simulator Events
+    DEBUG = 'sim.debug'
 
-class Event(metaclass=abc.ABCMeta):
-    def __init__(self, event_type, timestamp):
-        self.type = event_type
+
+class Event:
+    def __init__(self,  timestamp, event_type):
         self.timestamp = timestamp
+        self.type = event_type
+        self.source = None
+        self.dest = None
 
     def get_type(self):
         return self.type
@@ -44,13 +52,24 @@ class Event(metaclass=abc.ABCMeta):
     def get_timestamp(self):
         return self.timestamp
 
+    def get_source(self):
+        return self.source
 
-class AppStartEvent(Event):
-    def __init__(self, timestamp, app_id, app_name, source_class):
-        Event.__init__(self, event_type=EventType.APP_START, timestamp=timestamp)
+    def get_dest(self):
+        return self.dest
+
+    def __repr__(self, *args, **kwargs):
+        return '%s: %s' % (self.timestamp, self.type.value)
+
+
+class AppLaunchEvent(Event):
+    def __init__(self, timestamp, app_id, source_class):
+        Event.__init__(self, event_type=EventType.APP_LAUNCH, timestamp=timestamp)
         self.app_id = app_id
-        self.app_name = app_name
         self.source_class = source_class
+
+    def __repr__(self, *args, **kwargs):
+        return '%s - %s' % (Event.__repr__(self, args, kwargs), self.app_id)
 
 
 class ScreenEvent(Event):
@@ -114,3 +133,8 @@ class BluetoothEvent(Event):
     def __init__(self, timestamp, bluetooth_event):
         Event.__init__(self, event_type=EventType.BLUETOOTH, timestamp=timestamp)
         self.event = bluetooth_event
+
+
+class SystemMemorySnapshot(Event):
+    def __init__(self, timestamp):
+        Event.__init__(self, event_type=EventType.SYSTEM_MEMORY_SNAPSHOT, timestamp=timestamp)
