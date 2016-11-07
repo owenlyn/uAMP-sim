@@ -98,7 +98,7 @@ class BatteryStatus(Enum):
 
 
 @unique
-class BatteryPlugStatusType(Enum):
+class BatteryPlugState(Enum):
     NONE = 0
     AC = 1
     USB = 2
@@ -117,8 +117,15 @@ class BatteryState:
         self.level = None
         self.temp = None
         self.status = BatteryStatus.UNKNOWN
-        self.plug_status = BatteryPlugStatusType.NONE
+        self.plug_state = BatteryPlugState.NONE
         self.energy_state = BatteryEnergyState.UNKNOWN
+
+
+@unique
+class StorageState(Enum):
+    UNKNOWN = -1
+    LOW = 0
+    OKAY = 1
 
 
 class DeviceState:

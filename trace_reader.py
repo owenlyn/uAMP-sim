@@ -60,9 +60,9 @@ class JsonTraceReader(TraceReader):
             return events.Event(event_type=events.EventType.PSEUDO,
                                 timestamp=timestamp)
         elif event_json['log_type'] == 'foreground_app':
-            return events.AppLaunchEvent(timestamp=timestamp,
-                                         app_id=data['packageName'],
-                                         source_class=data['sourceClassName'])
+            return events.AppActivityUsageEvent(timestamp=timestamp,
+                                           app_id=data['packageName'],
+                                           source_class=data['sourceClassName'])
         elif event_json['log_type'] == 'system_snapshot':
             return events.SystemMemorySnapshot(timestamp=timestamp)
 
