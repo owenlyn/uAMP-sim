@@ -116,7 +116,7 @@ class Simulator(SimulatorBase):
         listeners = self.event_listeners[event.get_type()]
         for (event_filter, callback) in listeners:
             # Send event to each subscribed listener
-            if event_filter and event_filter(event):
+            if not event_filter or event_filter(event):
                 callback(event)
 
     def register_alarm(self, alarm, callback):
