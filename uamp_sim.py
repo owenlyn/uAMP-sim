@@ -8,6 +8,10 @@ from utils import PriorityQueue
 
 from trace_reader import get_trace_reader
 
+import events
+from SimpleSimulator import Simple_Simulator
+from events import EventType
+
 
 class Simulator(SimulatorBase):
     EVENT_QUEUE_THRESHOLD = 100
@@ -57,6 +61,8 @@ class Simulator(SimulatorBase):
         self.verbose = args.verbose
         self.debug_mode = args.debug
         # Instantiate necessary modules based on config files
+
+        # add instance of preload predictor
 
         # Build list of modules
         for module in self.modules.values():
@@ -171,6 +177,12 @@ def parse_args():
 def build_sim(args):
     simulator = Simulator()
     simulator.build(args)
+
+    ##TEST, run Simple_Simulator##
+    event = events.Event(event_type=events.EventType.PSEUDO,
+                                timestamp='2016-10-12 13:12:32.453000')
+    simple_sim = Simple_Simulator('PSEUDO')
+    simulator.subscribe(EventType.PSEUDO, simple_sim.callback)
     return simulator
 
 if __name__ == "__main__":

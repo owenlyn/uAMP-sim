@@ -14,7 +14,7 @@ class SimModule(metaclass=abc.ABCMeta):
     def get_type(self):
         return self.module_type
 
-    @abstractmethod
+    @abstractmethod#subscribe to event
     def build(self):
         pass
 
